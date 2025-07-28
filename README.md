@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+INIT SETUP
+ - [x] Criar estrutura do projeto Rails em modo API-only:
+ - [x] Criar repositório Git (local ou remoto).
+ - [x] Adicionar gems necessárias:
+    rspec-rails
+    rswag
+    factory_bot_rails
+    faker
+    rubocop
+    dotenv-rails
+ - [x] Criar Dockerfile.dev e docker-compose.yml com serviços:
+    Rails API
+    PostgreSQL
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ - [x] Rodar docker-compose up com sucesso.
+ - [x] Criar script para setup e execução do projeto
