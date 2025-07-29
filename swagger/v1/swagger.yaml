@@ -1,0 +1,264 @@
+---
+openapi: 3.0.1
+info:
+  title: Frames and Circles API
+  version: v1
+  description: API for registration and management of frames and associated circles,
+    obeying geometric rules of positioning and spatial limitation.
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+components:
+  schemas:
+    frame:
+      type: object
+      properties:
+        id:
+          type: integer
+        x:
+          type: number
+          format: float
+        "y":
+          type: number
+          format: float
+        width:
+          type: number
+          format: float
+        height:
+          type: number
+          format: float
+    circle:
+      type: object
+      properties:
+        id:
+          type: integer
+        x:
+          type: number
+          format: float
+        "y":
+          type: number
+          format: float
+        diameter:
+          type: number
+          format: float
+        frame_id:
+          type: integer
+paths:
+  "/frames/{frame_id}/circles":
+    parameters:
+    - name: frame_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Creates a circle in frame
+      tags:
+      - Circles
+      parameters: []
+      responses:
+        '201':
+          description: Circle created
+        '422':
+          description: Invalid circle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                    "y":
+                      type: number
+                    diameter:
+                      type: number
+                  required:
+                  - x
+                  - "y"
+                  - diameter
+  "/circles/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    put:
+      summary: Updates a circle
+      tags:
+      - Circles
+      parameters: []
+      responses:
+        '200':
+          description: Circle updated
+        '422':
+          description: Invalid update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                    "y":
+                      type: number
+    delete:
+      summary: Deletes a circle
+      tags:
+      - Circles
+      responses:
+        '204':
+          description: Circle deleted
+        '404':
+          description: Circle not found
+  "/circles":
+    get:
+      summary: Searches circles
+      tags:
+      - Circles
+      parameters:
+      - name: center_x
+        in: query
+        schema:
+          type: number
+      - name: center_y
+        in: query
+        schema:
+          type: number
+      - name: radius
+        in: query
+        schema:
+          type: number
+      - name: frame_id
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Circles found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    x:
+                      type: number
+                    "y":
+                      type: number
+                    diameter:
+                      type: number
+                    frame_id:
+                      type: integer
+  "/frames":
+    post:
+      summary: Creates a frame
+      tags:
+      - Frames
+      parameters: []
+      responses:
+        '201':
+          description: Frame created
+        '422':
+          description: Invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frame:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      example: 100.0
+                    "y":
+                      type: number
+                      example: 100.0
+                    width:
+                      type: number
+                      example: 200.0
+                    height:
+                      type: number
+                      example: 200.0
+                    circles_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          x:
+                            type: number
+                          "y":
+                            type: number
+                          diameter:
+                            type: number
+                  required:
+                  - x
+                  - "y"
+                  - width
+                  - height
+  "/frames/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a frame with metrics
+      tags:
+      - Frames
+      responses:
+        '200':
+          description: Frame found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  x:
+                    type: number
+                  "y":
+                    type: number
+                  width:
+                    type: number
+                  height:
+                    type: number
+                  metrics:
+                    type: object
+                    properties:
+                      total_circles:
+                        type: integer
+                      highest_point:
+                        type: number
+                      lowest_point:
+                        type: number
+                      leftmost_point:
+                        type: number
+                      rightmost_point:
+                        type: number
+    delete:
+      summary: Deletes a frame
+      tags:
+      - Frames
+      responses:
+        '204':
+          description: Frame deleted
+        '422':
+          description: Frame with circles cannot be deleted

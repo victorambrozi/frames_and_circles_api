@@ -1,0 +1,134 @@
+require 'swagger_helper'
+
+RSpec.describe 'Circles API', type: :request do
+  path '/frames/{frame_id}/circles' do
+    parameter name: :frame_id, in: :path, type: :integer
+
+    post 'Creates a circle in frame' do
+      tags 'Circles'
+      consumes 'application/json'
+      produces 'application/json'
+
+      parameter name: :circle, in: :body, schema: {
+        type: :object,
+        properties: {
+          circle: {
+            type: :object,
+            properties: {
+              x: { type: :number },
+              y: { type: :number },
+              diameter: { type: :number }
+            },
+            required: %w[x y diameter]
+          }
+        }
+      }
+
+      response '201', 'Circle created' do
+        let(:frame) { create(:frame) }
+        let(:frame_id) { frame.id }
+        let(:circle) do 
+          { 
+            circle: { 
+              x: frame.x - frame.width/2 + 20, 
+              y: frame.y - frame.height/2 + 20,
+              diameter: 20,
+              frame_id: frame.id
+            } 
+          }
+        end
+        run_test!
+      end
+
+      response '422', 'Invalid circle' do
+        let(:frame_id) { create(:frame).id }
+        let(:circle) { { circle: { x: 500, y: 500, diameter: 20 } } }
+        run_test!
+      end
+    end
+  end
+
+  path '/circles/{id}' do
+    parameter name: :id, in: :path, type: :integer
+
+    put 'Updates a circle' do
+      tags 'Circles'
+      consumes 'application/json'
+      produces 'application/json'
+
+      parameter name: :circle, in: :body, schema: {
+        type: :object,
+        properties: {
+          circle: {
+            type: :object,
+            properties: {
+              x: { type: :number },
+              y: { type: :number }
+            }
+          }
+        }
+      }
+
+      response '200', 'Circle updated' do
+        let(:circle) { create(:circle) }
+        let(:id) { circle.id }
+        let(:circle_params) { { circle: { x: 115, y: 115 } } }
+        run_test!
+      end
+
+      response '422', 'Invalid update' do
+        let(:frame) { create(:frame, x: 100, y: 100, width: 600, height: 600) }
+        let(:circle) { create(:circle, frame: frame, x: 110, y: 110, diameter: 20) }
+        let(:id) { circle.id }
+        let(:circle_params) do
+          { 
+            circle: {
+              x: frame.x + frame.width,
+              y: frame.y + frame.height,
+              frame_id: frame.id
+            }
+          }
+        end
+        run_test!
+      end
+    end
+
+    delete 'Deletes a circle' do
+      tags 'Circles'
+      
+      response '204', 'Circle deleted' do
+        let(:id) { create(:circle).id }
+        run_test!
+      end
+
+      response '404', 'Circle not found' do
+        let(:id) { 999 }
+        run_test!
+      end
+    end
+  end
+
+  path '/circles' do
+    get 'Searches circles' do
+      tags 'Circles'
+      produces 'application/json'
+
+      parameter name: :center_x, in: :query, type: :number
+      parameter name: :center_y, in: :query, type: :number
+      parameter name: :radius, in: :query, type: :number
+      parameter name: :frame_id, in: :query, type: :integer
+
+      response '200', 'Circles found' do
+        let(:frame) { create(:frame) }
+        let(:center_x) { 100 }
+        let(:center_y) { 100 }
+        let(:radius) { 50 }
+        let(:frame_id) { frame.id }
+        
+        before { create(:circle, frame: frame, x: 100, y: 100, diameter: 20) }
+        
+        run_test!
+      end
+    end
+  end
+end
