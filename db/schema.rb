@@ -10,8 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_223655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "circles", force: :cascade do |t|
+    t.decimal "x", precision: 8, scale: 2
+    t.decimal "y", precision: 8, scale: 2
+    t.decimal "diameter", precision: 8, scale: 2
+    t.bigint "frame_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["frame_id"], name: "index_circles_on_frame_id"
+  end
+
+  create_table "frames", force: :cascade do |t|
+    t.decimal "x", precision: 8, scale: 2
+    t.decimal "y", precision: 8, scale: 2
+    t.decimal "width", precision: 8, scale: 2
+    t.decimal "height", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "circles", "frames"
 end

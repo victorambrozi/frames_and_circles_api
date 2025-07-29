@@ -1,18 +1,19 @@
 # README
 
-INIT SETUP
- - [x] Criar estrutura do projeto Rails em modo API-only:
- - [x] Criar repositório Git (local ou remoto).
- - [x] Adicionar gems necessárias:
-    rspec-rails
-    rswag
-    factory_bot_rails
-    faker
-    rubocop
-    dotenv-rails
- - [x] Criar Dockerfile.dev e docker-compose.yml com serviços:
-    Rails API
-    PostgreSQL
+Modelagem do Banco e Regras
+- [X] Criar models:
+   Frame (quadro): x, y, width, height
+   Circle (círculo): x, y, diameter, frame_id
 
- - [x] Rodar docker-compose up com sucesso.
- - [x] Criar script para setup e execução do projeto
+- [x] Adicionar associações:
+   Frame -> has_many :circles
+   Circle -> belongs_to :frame
+
+-[x] Alterar tipo das colunas e rodar as migrations.
+
+CHECAR Validações e Regras de Negócio
+  Criar validações de geometria:
+   - [x] Criar testes das validações com model specs.
+   - [x] Círculo dentro do quadro
+   - [x] Círculo não pode tocar outro no mesmo quadro
+   - [x] Quadro não pode tocar outro quadro
