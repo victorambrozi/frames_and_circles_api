@@ -19,7 +19,7 @@ class Circle < ApplicationRecord
     left = x - radius
 
     if left < frame.left || right > frame.right || top < frame.top || bottom > frame.bottom
-      errors.add(:base, "Círculo deve estar completamente dentro do quadro")
+      errors.add(:base, "Circle should be completely within the frame")
     end
   end
 
@@ -35,7 +35,7 @@ class Circle < ApplicationRecord
       min_distance_squared = sum_radii**2
 
       if distance_squared <= min_distance_squared
-        errors.add(:base, "Círculo está tocando ou sobrepondo outro círculo no mesmo quadro")
+        errors.add(:base, "Circle is touching or overlapping another circle in the same frame")
         break
       end
     end

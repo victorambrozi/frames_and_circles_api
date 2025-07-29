@@ -60,9 +60,9 @@ paths:
       parameters: []
       responses:
         '201':
-          description: circle created
+          description: Circle created
         '422':
-          description: invalid circle
+          description: Invalid circle
       requestBody:
         content:
           application/json:
@@ -96,9 +96,9 @@ paths:
       parameters: []
       responses:
         '200':
-          description: circle updated
+          description: Circle updated
         '422':
-          description: invalid update
+          description: Invalid update
       requestBody:
         content:
           application/json:
@@ -118,9 +118,9 @@ paths:
       - Circles
       responses:
         '204':
-          description: circle deleted
+          description: Circle deleted
         '404':
-          description: circle not found
+          description: Circle not found
   "/circles":
     get:
       summary: Searches circles
@@ -145,7 +145,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: circles found
+          description: Circles found
           content:
             application/json:
               schema:
@@ -171,9 +171,9 @@ paths:
       parameters: []
       responses:
         '201':
-          description: frame created
+          description: Frame created
         '422':
-          description: invalid request
+          description: Invalid request
       requestBody:
         content:
           application/json:
@@ -224,7 +224,7 @@ paths:
       - Frames
       responses:
         '200':
-          description: frame found
+          description: Frame found
           content:
             application/json:
               schema:
@@ -259,6 +259,6 @@ paths:
       - Frames
       responses:
         '204':
-          description: frame deleted
+          description: Frame deleted
         '422':
-          description: frame with circles cannot be deleted
+          description: Frame with circles cannot be deleted

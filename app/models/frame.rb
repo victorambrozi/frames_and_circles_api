@@ -26,7 +26,7 @@ class Frame < ApplicationRecord
   def validate_not_touching_other_frames
     Frame.where.not(id: id).each do |other|
       if touching_or_overlapping?(self, other)
-        errors.add(:base, "Quadro está tocando ou sobrepondo outro quadro")
+        errors.add(:base, "Frame is playing or overlapping another frame")
         break
       end
     end

@@ -34,12 +34,12 @@ RSpec.describe 'Frames API', type: :request do
         }
       }
 
-      response '201', 'frame created' do
+      response '201', 'Frame created' do
         let(:frame) { { frame: { x: 100, y: 100, width: 200, height: 200 } } }
         run_test!
       end
 
-      response '422', 'invalid request' do
+      response '422', 'Invalid request' do
         let(:frame) { { frame: { x: nil } } }
         run_test!
       end
@@ -53,7 +53,7 @@ RSpec.describe 'Frames API', type: :request do
       tags 'Frames'
       produces 'application/json'
 
-      response '200', 'frame found' do
+      response '200', 'Frame found' do
         schema type: :object,
           properties: {
             id: { type: :integer },
@@ -81,12 +81,12 @@ RSpec.describe 'Frames API', type: :request do
     delete 'Deletes a frame' do
       tags 'Frames'
       
-      response '204', 'frame deleted' do
+      response '204', 'Frame deleted' do
         let(:id) { create(:frame).id }
         run_test!
       end
 
-      response '422', 'frame with circles cannot be deleted' do
+      response '422', 'Frame with circles cannot be deleted' do
         let(:frame) { create(:frame) }
         let(:id) { frame.id }
         before { create(:circle, frame: frame) }

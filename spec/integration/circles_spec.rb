@@ -24,13 +24,13 @@ RSpec.describe 'Circles API', type: :request do
         }
       }
 
-      response '201', 'circle created' do
+      response '201', 'Circle created' do
         let(:frame_id) { create(:frame).id }
         let(:circle) { { circle: { x: 110, y: 110, diameter: 20 } } }
         run_test!
       end
 
-      response '422', 'invalid circle' do
+      response '422', 'Invalid circle' do
         let(:frame_id) { create(:frame).id }
         let(:circle) { { circle: { x: 500, y: 500, diameter: 20 } } }
         run_test!
@@ -59,14 +59,14 @@ RSpec.describe 'Circles API', type: :request do
         }
       }
 
-      response '200', 'circle updated' do
+      response '200', 'Circle updated' do
         let(:circle) { create(:circle) }
         let(:id) { circle.id }
         let(:circle_params) { { circle: { x: 115, y: 115 } } }
         run_test!
       end
 
-      response '422', 'invalid update' do
+      response '422', 'Invalid update' do
         let(:circle) { create(:circle) }
         let(:id) { circle.id }
         let(:circle_params) { { circle: { x: 500, y: 500 } } }
@@ -77,12 +77,12 @@ RSpec.describe 'Circles API', type: :request do
     delete 'Deletes a circle' do
       tags 'Circles'
       
-      response '204', 'circle deleted' do
+      response '204', 'Circle deleted' do
         let(:id) { create(:circle).id }
         run_test!
       end
 
-      response '404', 'circle not found' do
+      response '404', 'Circle not found' do
         let(:id) { 999 }
         run_test!
       end
@@ -99,7 +99,7 @@ RSpec.describe 'Circles API', type: :request do
       parameter name: :radius, in: :query, type: :number
       parameter name: :frame_id, in: :query, type: :integer
 
-      response '200', 'circles found' do
+      response '200', 'Circles found' do
         schema type: :array,
           items: {
             type: :object,
