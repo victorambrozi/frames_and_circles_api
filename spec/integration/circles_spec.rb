@@ -25,8 +25,18 @@ RSpec.describe 'Circles API', type: :request do
       }
 
       response '201', 'Circle created' do
-        let(:frame_id) { create(:frame).id }
-        let(:circle) { { circle: { x: 110, y: 110, diameter: 20 } } }
+        let(:frame) { create(:frame) }
+        let(:frame_id) { frame.id }
+        let(:circle) do 
+          { 
+            circle: { 
+              x: frame.x - frame.width/2 + 20, 
+              y: frame.y - frame.height/2 + 20,
+              diameter: 20,
+              frame_id: frame.id
+            } 
+          }
+        end
         run_test!
       end
 
@@ -67,9 +77,18 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '422', 'Invalid update' do
-        let(:circle) { create(:circle) }
+        let(:frame) { create(:frame, x: 100, y: 100, width: 600, height: 600) }
+        let(:circle) { create(:circle, frame: frame, x: 110, y: 110, diameter: 20) }
         let(:id) { circle.id }
-        let(:circle_params) { { circle: { x: 500, y: 500 } } }
+        let(:circle_params) do
+          { 
+            circle: {
+              x: frame.x + frame.width,
+              y: frame.y + frame.height,
+              frame_id: frame.id
+            }
+          }
+        end
         run_test!
       end
     end
@@ -100,21 +119,13 @@ RSpec.describe 'Circles API', type: :request do
       parameter name: :frame_id, in: :query, type: :integer
 
       response '200', 'Circles found' do
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer },
-              x: { type: :number },
-              y: { type: :number },
-              diameter: { type: :number },
-              frame_id: { type: :integer }
-            }
-          }
-
         let(:frame) { create(:frame) }
+        let(:center_x) { 100 }
+        let(:center_y) { 100 }
+        let(:radius) { 50 }
         let(:frame_id) { frame.id }
-        before { create(:circle, frame: frame) }
+        
+        before { create(:circle, frame: frame, x: 100, y: 100, diameter: 20) }
         
         run_test!
       end

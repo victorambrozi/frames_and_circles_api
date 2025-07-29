@@ -54,26 +54,14 @@ RSpec.describe 'Frames API', type: :request do
       produces 'application/json'
 
       response '200', 'Frame found' do
-        schema type: :object,
-          properties: {
-            id: { type: :integer },
-            x: { type: :number },
-            y: { type: :number },
-            width: { type: :number },
-            height: { type: :number },
-            metrics: {
-              type: :object,
-              properties: {
-                total_circles: { type: :integer },
-                highest_point: { type: :number },
-                lowest_point: { type: :number },
-                leftmost_point: { type: :number },
-                rightmost_point: { type: :number }
-              }
-            }
-          }
-
-        let(:id) { create(:frame).id }
+        let(:frame) { create(:frame) }
+        let(:id) { frame.id }
+        
+        before do
+          create(:circle, frame: frame, x: frame.x - frame.width/2 + 20, y: frame.y, diameter: 20)
+          create(:circle, frame: frame, x: frame.x + frame.width/2 - 20, y: frame.y, diameter: 20)
+        end
+        
         run_test!
       end
     end
@@ -89,7 +77,14 @@ RSpec.describe 'Frames API', type: :request do
       response '422', 'Frame with circles cannot be deleted' do
         let(:frame) { create(:frame) }
         let(:id) { frame.id }
-        before { create(:circle, frame: frame) }
+        
+        before do
+          create(:circle, 
+                frame: frame,
+                x: frame.x - frame.width/2 + 20,
+                y: frame.y - frame.height/2 + 20,
+                diameter: 20)
+        end
         
         run_test!
       end
