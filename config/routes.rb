@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :frames, only: [:create, :show, :destroy] do
@@ -7,5 +9,5 @@ Rails.application.routes.draw do
 
   resources :circles, only: [:update, :destroy]
 
-  get '/circles', to: 'circles#index', as: :search_circles
+  get '/circles', to: 'circles#index'
 end

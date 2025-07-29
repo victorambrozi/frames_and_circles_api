@@ -5,9 +5,6 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem 'dotenv-rails', groups: [:development, :test]
 
-# Docs
-gem "rswag"
-
 # Rails 8
 gem "solid_cache"
 gem "solid_queue"
@@ -21,4 +18,9 @@ group :development, :test do
 
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "rubocop-rails-omakase", require: false
+
+  # Documentation
+  gem 'rswag'
+  gem 'rswag-api'
+  gem 'rswag-ui'
 end
