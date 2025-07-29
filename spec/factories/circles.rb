@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :circle do
-    association :frame
-    x { 50 }
-    y { 50 }
+    x { 100 }
+    y { 100 }
     diameter { 20 }
+    association :frame
   end
 end
